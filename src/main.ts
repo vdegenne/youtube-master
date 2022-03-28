@@ -136,10 +136,11 @@ export class AppContainer extends LitElement {
       ${this.data.map(V => {
         return html`<a class="video" title="${V.id}" href="./?id=${V.id}">${V.title}</a>`
       })}
-      <mwc-button raised style="--mdc-theme-primary:red"
-        @click=${_=>this.navigateTo()}>open</mwc-button>
+      <div style="text-align:center">
+        <mwc-button raised style="--mdc-theme-primary:red" icon=launch
+          @click=${_=>this.navigateTo()}>open</mwc-button>
+      </div>
     ` : nothing}
-
 
     ${this.page === 'video' ? html`
       <div id=controls style="text-align:right">
@@ -217,7 +218,9 @@ export class AppContainer extends LitElement {
         window.toast('couldn\'t process the url')
       }
     }
-
+    else {
+      window.location.href = `./?id=${input}`
+    }
   }
 
   // Use setSpeed instead
