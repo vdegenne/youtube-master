@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>youtube-master</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" rel="stylesheet">
+
+    <script>
+      // -- Promise that frontend scripts can use to make sure YouTube API is loaded
+      window.YTScriptLoad = new Promise(resolve => window.YTScriptResolve = resolve)
+      function onYouTubeIframeAPIReady() {
+        window.YTScriptResolve()
+      }
+    </script>
+    <script src="https://www.youtube.com/iframe_api" id="YTScript"></script>
+
+    <!-- <base href="./testy" target="_blank"> -->
+  </head>
+  <body>
+    <style>
+      body {
+        margin: 0;
+        font-family: Roboto;
+        --mdc-theme-primary: black;
+      }
+    </style>
+
+    <app-container id=app></app-container>
+    <create-dialog id=createDialog></create-dialog>
+
+    <mwc-snackbar id=snackbar></mwc-snackbar>
+
+    <script type=module src="./app.js"></script>
+    <script>
+      window.toast = function (labelText, timeoutMs = 4000) {
+        snackbar.labelText = labelText;
+        snackbar.timeoutMs = timeoutMs;
+        snackbar.open = true;
+      }
+    </script>
+  </body>
+</html>
