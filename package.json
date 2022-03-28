@@ -17,10 +17,11 @@
     "lit": "^2.1.1",
     "pwa-helpers": "^0.9.1",
     "rollup": "^2.63.0",
+    "rollup-plugin-terser": "^7.0.2",
     "typescript": "^4.5.4"
   },
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c --environment minify",
     "watch": "rollup -cw",
     "watch:server": "pm2 start pm2.config.js",
     "browser-sync:static": "browser-sync docs --files docs/app.js --no-notify",
