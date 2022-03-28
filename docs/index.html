@@ -7,6 +7,8 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" rel="stylesheet">
 
+    <link rel="manifest" href="./manifest.json" />
+
     <script>
       // -- Promise that frontend scripts can use to make sure YouTube API is loaded
       window.YTScriptLoad = new Promise(resolve => window.YTScriptResolve = resolve)
@@ -38,6 +40,10 @@
         snackbar.labelText = labelText;
         snackbar.timeoutMs = timeoutMs;
         snackbar.open = true;
+      }
+
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js');
       }
     </script>
   </body>

@@ -189,7 +189,7 @@ export class AppContainer extends LitElement {
 
   navigateTo () {
     const input = prompt('YouTube link or id')
-    if (input === null) {
+    if (input === null || input === '') {
       return
     }
     if (input.includes('/')) {
