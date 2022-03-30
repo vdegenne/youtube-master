@@ -787,14 +787,15 @@ const Ai=ot`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
   }
   `,o([Et("mwc-dialog")],Si.prototype,"dialog",void 0),o([_t()],Si.prototype,"video",void 0),Si=o([bt("create-dialog")],Si);let ki=class extends ft{render(){return F`
 
-    Share this page on your devices where you want to load this device data.
+    <div>Share this page on your devices where you want to load this device data.</div>
 
     <textarea disabled>${this.data}</textarea>
 
     <div style="color:red">You're about to load this page data. Your local data on this device will be replace with the above content !</div>
 
-    <mwc-button unelevated>load the data</mwc-button>
-    `}get data(){const t=new URLSearchParams(window.location.search);return JSON.parse(decodeURIComponent(t.get("d")))}};ki=o([bt("share-interface")],ki);let Ii=class extends ft{constructor(){if(super(),this.data=[{title:"貧乏なんて気にしない",speed:1,id:"yNTKufmhBVo",flag:0}],this.page="",this.loaded=!1,localStorage.getItem("youtube-master:data")&&(this.data=JSON.parse(localStorage.getItem("youtube-master:data").toString())),window.location.search){const t=new URLSearchParams(window.location.search);t.has("id")||(window.location.search=""),this.page="video";const e=t.get("id");this.video={id:e,title:"Untitled Video",speed:1,flag:0},this.isVideoSaved&&(this.video=this.data.find((t=>t.id===this.video.id))),window.YTScriptLoad.then((()=>{setTimeout((()=>this.loadVideo()),1e3)}))}window.addEventListener("resize",(()=>{this.requestUpdate()}))}get isVideoSaved(){return this.data.find((t=>t.id===this.video.id))}render(){return F`
+    <mwc-button unelevated
+      @click=${()=>this.loadData()}>load the data</mwc-button>
+    `}get data(){return new URLSearchParams(window.location.search).get("d")}loadData(){localStorage.setItem("youtube-master:data",this.data),window.location.href=".."}};ki=o([bt("share-interface")],ki);let Ii=class extends ft{constructor(){if(super(),this.data=[{title:"貧乏なんて気にしない",speed:1,id:"yNTKufmhBVo",flag:0}],this.page="",this.loaded=!1,localStorage.getItem("youtube-master:data")&&(this.data=JSON.parse(localStorage.getItem("youtube-master:data").toString())),window.location.search){const t=new URLSearchParams(window.location.search);t.has("id")||(window.location.search=""),this.page="video";const e=t.get("id");this.video={id:e,title:"Untitled Video",speed:1,flag:0},this.isVideoSaved&&(this.video=this.data.find((t=>t.id===this.video.id))),window.YTScriptLoad.then((()=>{setTimeout((()=>this.loadVideo()),1e3)}))}window.addEventListener("resize",(()=>{this.requestUpdate()}))}get isVideoSaved(){return this.data.find((t=>t.id===this.video.id))}render(){return F`
 
     ${""===this.page?F`
       ${this.data.map((t=>F`<a class="video" title="${t.id}" href="./?id=${t.id}">${t.title}</a>`))}
