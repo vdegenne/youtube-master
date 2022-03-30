@@ -141,7 +141,7 @@ export class AppContainer extends LitElement {
         <mwc-button raised style="--mdc-theme-primary:red" icon=launch
           @click=${_=>this.navigateTo()}>open</mwc-button>
         <mwc-button outlined
-          @click=${()=>{window.location.href = `./?d=${encodeURIComponent(JSON.stringify(this.data))}`}}>export data</mwc-button>
+          @click=${()=>{window.location.href = `./share/?d=${encodeURIComponent(JSON.stringify(this.data))}`}}>export data</mwc-button>
       </div>
     ` : nothing}
 
