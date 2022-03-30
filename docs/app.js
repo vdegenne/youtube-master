@@ -785,13 +785,24 @@ const Ai=ot`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
   mwc-textfield:first-of-type {
     margin-top:12px;
   }
-  `,o([Et("mwc-dialog")],Si.prototype,"dialog",void 0),o([_t()],Si.prototype,"video",void 0),Si=o([bt("create-dialog")],Si);let ki=class extends ft{constructor(){if(super(),this.data=[{title:"貧乏なんて気にしない",speed:1,id:"yNTKufmhBVo",flag:0}],this.page="",this.loaded=!1,localStorage.getItem("youtube-master:data")&&(this.data=JSON.parse(localStorage.getItem("youtube-master:data").toString())),window.location.search){const t=new URLSearchParams(window.location.search);t.has("id")||(window.location.search=""),this.page="video";const e=t.get("id");this.video={id:e,title:"Untitled Video",speed:1,flag:0},this.isVideoSaved&&(this.video=this.data.find((t=>t.id===this.video.id))),window.YTScriptLoad.then((()=>{setTimeout((()=>this.loadVideo()),1e3)}))}window.addEventListener("resize",(()=>{this.requestUpdate()}))}get isVideoSaved(){return this.data.find((t=>t.id===this.video.id))}render(){return F`
+  `,o([Et("mwc-dialog")],Si.prototype,"dialog",void 0),o([_t()],Si.prototype,"video",void 0),Si=o([bt("create-dialog")],Si);let ki=class extends ft{render(){return F`
+
+    Share this page on your devices where you want to load this device data.
+
+    <textarea disabled>${this.data}</textarea>
+
+    <div style="color:red">You're about to load this page data. Your local data on this device will be replace with the above content !</div>
+
+    <mwc-button unelevated>load the data</mwc-button>
+    `}get data(){const t=new URLSearchParams(window.location.search);return JSON.parse(decodeURIComponent(t.get("d")))}};ki=o([bt("share-interface")],ki);let Ii=class extends ft{constructor(){if(super(),this.data=[{title:"貧乏なんて気にしない",speed:1,id:"yNTKufmhBVo",flag:0}],this.page="",this.loaded=!1,localStorage.getItem("youtube-master:data")&&(this.data=JSON.parse(localStorage.getItem("youtube-master:data").toString())),window.location.search){const t=new URLSearchParams(window.location.search);t.has("id")||(window.location.search=""),this.page="video";const e=t.get("id");this.video={id:e,title:"Untitled Video",speed:1,flag:0},this.isVideoSaved&&(this.video=this.data.find((t=>t.id===this.video.id))),window.YTScriptLoad.then((()=>{setTimeout((()=>this.loadVideo()),1e3)}))}window.addEventListener("resize",(()=>{this.requestUpdate()}))}get isVideoSaved(){return this.data.find((t=>t.id===this.video.id))}render(){return F`
 
     ${""===this.page?F`
       ${this.data.map((t=>F`<a class="video" title="${t.id}" href="./?id=${t.id}">${t.title}</a>`))}
       <div style="text-align:center">
         <mwc-button raised style="--mdc-theme-primary:red" icon=launch
           @click=${t=>this.navigateTo()}>open</mwc-button>
+        <mwc-button outlined
+          @click=${()=>{window.location.href=`./?d=${encodeURIComponent(JSON.stringify(this.data))}`}}>export data</mwc-button>
       </div>
     `:P}
 
@@ -833,7 +844,7 @@ const Ai=ot`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
       `:P}
 
     `:P}
-    `}navigateTo(){const t=prompt("YouTube link or id");if(null!==t&&""!==t)if(t.includes("/")){t.startsWith("https")||window.toast("invalid link");const e=t.split("?");if(1===e.length){const e=t.split("/");return void(window.location.href=`./?id=${e[e.length-1]}`)}if(2===e.length){const t=new URLSearchParams(e[1]);return t.has("v")?void(window.location.href=`./?id=${t.get("v")}`):void window.toast("invalid YouTube link")}window.toast("couldn't process the url")}else window.location.href=`./?id=${t}`}changeSpeed(t){this.video.speed+=t,this.video.speed<.25&&(this.video.speed=.25),this.video.speed>2&&(this.video.speed=2),this.setSpeed(this.video.speed)}setSpeed(t){this.video.speed=t,this.requestUpdate(),this.player.setPlaybackRate(this.video.speed),this.saveData()}async loadVideo(){this.player=await new Promise((t=>{const e=new window.YT.Player(this.playerContainer,{videoId:this.video.id,playerVars:{},events:{onReady:()=>{t(e)},onStateChange:this.onPlayerStateChange.bind(this)}})})),this.loaded=!0,this.isVideoSaved||(this.video.title=this.player.getVideoData().title),this.setSpeed(this.video.speed)}onPlayerStateChange(t){const e=t.data;[-1,0,1,2].includes(e)&&this.loaded&&this.requestUpdate()}async onAddVideoClick(){try{const t=await window.createDialog.open(JSON.parse(JSON.stringify(this.video)));this.video=t,this.data.push(this.video),this.saveData(),window.toast("video saved"),this.requestUpdate()}catch(t){window.toast("cancelled")}}async createNewEntry(){}saveData(){localStorage.setItem("youtube-master:data",JSON.stringify(this.data))}};ki.styles=ot`
+    `}navigateTo(){const t=prompt("YouTube link or id");if(null!==t&&""!==t)if(t.includes("/")){t.startsWith("https")||window.toast("invalid link");const e=t.split("?");if(1===e.length){const e=t.split("/");return void(window.location.href=`./?id=${e[e.length-1]}`)}if(2===e.length){const t=new URLSearchParams(e[1]);return t.has("v")?void(window.location.href=`./?id=${t.get("v")}`):void window.toast("invalid YouTube link")}window.toast("couldn't process the url")}else window.location.href=`./?id=${t}`}changeSpeed(t){this.video.speed+=t,this.video.speed<.25&&(this.video.speed=.25),this.video.speed>2&&(this.video.speed=2),this.setSpeed(this.video.speed)}setSpeed(t){this.video.speed=t,this.requestUpdate(),this.player.setPlaybackRate(this.video.speed),this.saveData()}async loadVideo(){this.player=await new Promise((t=>{const e=new window.YT.Player(this.playerContainer,{videoId:this.video.id,playerVars:{},events:{onReady:()=>{t(e)},onStateChange:this.onPlayerStateChange.bind(this)}})})),this.loaded=!0,this.isVideoSaved||(this.video.title=this.player.getVideoData().title),this.setSpeed(this.video.speed)}onPlayerStateChange(t){const e=t.data;[-1,0,1,2].includes(e)&&this.loaded&&this.requestUpdate()}async onAddVideoClick(){try{const t=await window.createDialog.open(JSON.parse(JSON.stringify(this.video)));this.video=t,this.data.push(this.video),this.saveData(),window.toast("video saved"),this.requestUpdate()}catch(t){window.toast("cancelled")}}async createNewEntry(){}saveData(){localStorage.setItem("youtube-master:data",JSON.stringify(this.data))}};Ii.styles=ot`
   .video {
     display: block;
     padding: 12px;
@@ -882,4 +893,4 @@ const Ai=ot`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
     padding: 0 5px;
     /* padding: 12px; */
   }
-  `,o([_t()],ki.prototype,"data",void 0),o([_t()],ki.prototype,"page",void 0),o([_t()],ki.prototype,"player",void 0),o([_t()],ki.prototype,"loaded",void 0),o([Et("#player")],ki.prototype,"playerContainer",void 0),o([Et("#IFrame")],ki.prototype,"playerTest",void 0),o([Et("#homeButton")],ki.prototype,"homeButton",void 0),ki=o([bt("app-container")],ki);export{ki as AppContainer};
+  `,o([_t()],Ii.prototype,"data",void 0),o([_t()],Ii.prototype,"page",void 0),o([_t()],Ii.prototype,"player",void 0),o([_t()],Ii.prototype,"loaded",void 0),o([Et("#player")],Ii.prototype,"playerContainer",void 0),o([Et("#IFrame")],Ii.prototype,"playerTest",void 0),o([Et("#homeButton")],Ii.prototype,"homeButton",void 0),Ii=o([bt("app-container")],Ii);export{Ii as AppContainer};

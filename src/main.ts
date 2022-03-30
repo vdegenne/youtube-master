@@ -10,6 +10,7 @@ import '@material/mwc-textfield'
 import './create-dialog'
 import { CreateDialog } from './create-dialog'
 import { Data, Video } from './types'
+import './share-interface'
 
 declare global {
   interface Window {
@@ -139,6 +140,8 @@ export class AppContainer extends LitElement {
       <div style="text-align:center">
         <mwc-button raised style="--mdc-theme-primary:red" icon=launch
           @click=${_=>this.navigateTo()}>open</mwc-button>
+        <mwc-button outlined
+          @click=${()=>{window.location.href = `./?d=${encodeURIComponent(JSON.stringify(this.data))}`}}>export data</mwc-button>
       </div>
     ` : nothing}
 
