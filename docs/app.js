@@ -826,26 +826,26 @@ const Ai=ot`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
           @click=${()=>this.setSpeed(this.video.speed+.25)}><mwc-icon>speed</mwc-icon></div>
       </div>
 
-      <div class="flex" ?hide=${!this.loaded} style="--mdc-icon-button-size:${~~(window.visualViewport.width/3)}px;--mdc-icon-size:54px">
+      <div class="flex" ?hide=${!this.loaded} style="--mdc-icon-button-size:100px;--mdc-icon-size:54px">
         <mwc-icon-button icon=restore style="background-color:rgb(63, 81, 181);color:white;border-radius:50%"
             @click=${()=>this.player.seekTo(this.player.getCurrentTime()-3)}></mwc-icon-button>
-        <mwc-icon-button icon=${1!==this.player.getPlayerState()?"play_arrow":"pause"} style="color:white;background-color:#424242;border-radius:50%;"
-          @click=${()=>1===this.player.getPlayerState()?this.player.pauseVideo():this.player.playVideo()}></mwc-icon-button>
+        <mwc-icon-button id=playButton icon=${1!==this.player.getPlayerState()?"play_arrow":"pause"} style="color:white;background-color:#424242;border-radius:50%;"
+          @click=${()=>this.onPlayButtonClick()}></mwc-icon-button>
         <mwc-icon-button icon=update style="background-color:rgb(63, 81, 181);color:white;border-radius:50%"
             @click=${()=>this.player.seekTo(this.player.getCurrentTime()+3)}></mwc-icon-button>
       </div>
 
       <div style="display:flex;align-items:center;justify-content:space-between;--mdc-icon-button-size:60px;--mdc-icon-size:30px">
-        <mwc-icon-button icon=flag style="background-color:rgb(63, 81, 181);color:white;border-radius:50%"
-          @click=${t=>{this.video.flag=this.player.getCurrentTime(),this.requestUpdate(),this.saveData()}}></mwc-icon-button>
-        <div>${~~this.video.flag}</div>
-        <mwc-icon-button icon=fast_rewind
-          @click=${t=>{this.player.seekTo(this.video.flag)}}></mwc-icon-button>
+          <mwc-icon-button icon=fast_rewind
+                           @click=${t=>{this.player.seekTo(this.video.flag)}}></mwc-icon-button>
+          <div>${~~this.video.flag}</div>
+          <mwc-icon-button icon=flag style="background-color:rgb(63, 81, 181);color:white;border-radius:50%"
+                           @click=${t=>{this.video.flag=this.player.getCurrentTime(),this.requestUpdate(),this.saveData()}}></mwc-icon-button>
       </div>
       `:P}
 
     `:P}
-    `}navigateTo(){const t=prompt("YouTube link or id");if(null!==t&&""!==t)if(t.includes("/")){t.startsWith("https")||window.toast("invalid link");const e=t.split("?");if(1===e.length){const e=t.split("/");return void(window.location.href=`./?id=${e[e.length-1]}`)}if(2===e.length){const t=new URLSearchParams(e[1]);return t.has("v")?void(window.location.href=`./?id=${t.get("v")}`):void window.toast("invalid YouTube link")}window.toast("couldn't process the url")}else window.location.href=`./?id=${t}`}changeSpeed(t){this.video.speed+=t,this.video.speed<.25&&(this.video.speed=.25),this.video.speed>2&&(this.video.speed=2),this.setSpeed(this.video.speed)}setSpeed(t){this.video.speed=t,this.requestUpdate(),this.player.setPlaybackRate(this.video.speed),this.saveData()}async loadVideo(){this.player=await new Promise((t=>{const e=new window.YT.Player(this.playerContainer,{videoId:this.video.id,playerVars:{},events:{onReady:()=>{t(e)},onStateChange:this.onPlayerStateChange.bind(this)}})})),this.loaded=!0,this.isVideoSaved||(this.video.title=this.player.getVideoData().title),this.setSpeed(this.video.speed)}onPlayerStateChange(t){const e=t.data;[-1,0,1,2].includes(e)&&this.loaded&&this.requestUpdate()}async onAddVideoClick(){try{const t=await window.createDialog.open(JSON.parse(JSON.stringify(this.video)));this.video=t,this.data.push(this.video),this.saveData(),window.toast("video saved"),this.requestUpdate()}catch(t){window.toast("cancelled")}}async createNewEntry(){}saveData(){localStorage.setItem("youtube-master:data",JSON.stringify(this.data))}};Ii.styles=ot`
+    `}onPlayButtonClick(){1===this.player.getPlayerState()?this.player.pauseVideo():this.player.playVideo()}firstUpdated(t){window.addEventListener("keypress",(t=>{"a"==t.key&&this.backButton.click(),"d"==t.key&&this.forwardButton.click()," "==t.key&&(t.preventDefault(),this.onPlayButtonClick())})),super.firstUpdated(t)}navigateTo(){const t=prompt("YouTube link or id");if(null!==t&&""!==t)if(t.includes("/")){t.startsWith("https")||window.toast("invalid link");const e=t.split("?");if(1===e.length){const e=t.split("/");return void(window.location.href=`./?id=${e[e.length-1]}`)}if(2===e.length){const t=new URLSearchParams(e[1]);return t.has("v")?void(window.location.href=`./?id=${t.get("v")}`):void window.toast("invalid YouTube link")}window.toast("couldn't process the url")}else window.location.href=`./?id=${t}`}changeSpeed(t){this.video.speed+=t,this.video.speed<.25&&(this.video.speed=.25),this.video.speed>2&&(this.video.speed=2),this.setSpeed(this.video.speed)}setSpeed(t){this.video.speed=t,this.requestUpdate(),this.player.setPlaybackRate(this.video.speed),this.saveData()}async loadVideo(){this.player=await new Promise((t=>{const e=new window.YT.Player(this.playerContainer,{videoId:this.video.id,playerVars:{},events:{onReady:()=>{t(e)},onStateChange:this.onPlayerStateChange.bind(this)}})})),this.loaded=!0,this.isVideoSaved||(this.video.title=this.player.getVideoData().title),this.setSpeed(this.video.speed)}onPlayerStateChange(t){const e=t.data;[-1,0,1,2].includes(e)&&this.loaded&&this.requestUpdate()}async onAddVideoClick(){try{const t=await window.createDialog.open(JSON.parse(JSON.stringify(this.video)));this.video=t,this.data.push(this.video),this.saveData(),window.toast("video saved"),this.requestUpdate()}catch(t){window.toast("cancelled")}}async createNewEntry(){}saveData(){localStorage.setItem("youtube-master:data",JSON.stringify(this.data))}};Ii.styles=ot`
   .video {
     display: block;
     padding: 12px;
@@ -894,4 +894,4 @@ const Ai=ot`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
     padding: 0 5px;
     /* padding: 12px; */
   }
-  `,o([_t()],Ii.prototype,"data",void 0),o([_t()],Ii.prototype,"page",void 0),o([_t()],Ii.prototype,"player",void 0),o([_t()],Ii.prototype,"loaded",void 0),o([Et("#player")],Ii.prototype,"playerContainer",void 0),o([Et("#IFrame")],Ii.prototype,"playerTest",void 0),o([Et("#homeButton")],Ii.prototype,"homeButton",void 0),Ii=o([bt("app-container")],Ii);export{Ii as AppContainer};
+  `,o([_t()],Ii.prototype,"data",void 0),o([_t()],Ii.prototype,"page",void 0),o([_t()],Ii.prototype,"player",void 0),o([_t()],Ii.prototype,"loaded",void 0),o([Et("#player")],Ii.prototype,"playerContainer",void 0),o([Et("#IFrame")],Ii.prototype,"playerTest",void 0),o([Et("#homeButton")],Ii.prototype,"homeButton",void 0),o([Et("[icon=restore]")],Ii.prototype,"backButton",void 0),o([Et("[icon=update]")],Ii.prototype,"forwardButton",void 0),o([Et("#playButton")],Ii.prototype,"playButton",void 0),Ii=o([bt("app-container")],Ii);export{Ii as AppContainer};

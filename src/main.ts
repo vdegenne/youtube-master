@@ -1,4 +1,4 @@
-import { LitElement, html, css, PropertyValueMap, nothing } from 'lit'
+import {LitElement, html, css, PropertyValueMap, nothing, PropertyValues} from 'lit'
 import { customElement, query, state } from 'lit/decorators.js'
 import '@material/mwc-snackbar'
 import '@material/mwc-button'
@@ -11,6 +11,7 @@ import './create-dialog'
 import { CreateDialog } from './create-dialog'
 import { Data, Video } from './types'
 import './share-interface'
+import {Button} from "@material/mwc-button";
 
 declare global {
   interface Window {
@@ -36,6 +37,9 @@ export class AppContainer extends LitElement {
   @query('#player') playerContainer!: HTMLDivElement;
   @query('#IFrame') playerTest!: HTMLIFrameElement;
   @query('#homeButton') homeButton!: HTMLAnchorElement;
+  @query('[icon=restore]') backButton!: Button;
+  @query('[icon=update]') forwardButton!: Button;
+  @query('#playButton') playButton!: Button;
 
   get isVideoSaved () {
     // const params = new URLSearchParams(window.location.search)
@@ -168,26 +172,46 @@ export class AppContainer extends LitElement {
           @click=${() => this.setSpeed(this.video.speed + .25)}><mwc-icon>speed</mwc-icon></div>
       </div>
 
-      <div class="flex" ?hide=${!this.loaded} style="--mdc-icon-button-size:${~~(window.visualViewport.width / 3)}px;--mdc-icon-size:54px">
+      <div class="flex" ?hide=${!this.loaded} style="--mdc-icon-button-size:100px;--mdc-icon-size:54px">
         <mwc-icon-button icon=restore style="background-color:rgb(63, 81, 181);color:white;border-radius:50%"
             @click=${() => this.player.seekTo(this.player.getCurrentTime() - 3)}></mwc-icon-button>
-        <mwc-icon-button icon=${this.player.getPlayerState() !== 1 ? 'play_arrow' : 'pause' } style="color:white;background-color:#424242;border-radius:50%;"
-          @click=${() => this.player.getPlayerState() === 1 ? this.player.pauseVideo() : this.player.playVideo()}></mwc-icon-button>
+        <mwc-icon-button id=playButton icon=${this.player.getPlayerState() !== 1 ? 'play_arrow' : 'pause' } style="color:white;background-color:#424242;border-radius:50%;"
+          @click=${() => this.onPlayButtonClick()}></mwc-icon-button>
         <mwc-icon-button icon=update style="background-color:rgb(63, 81, 181);color:white;border-radius:50%"
             @click=${() => this.player.seekTo(this.player.getCurrentTime() + 3)}></mwc-icon-button>
       </div>
 
       <div style="display:flex;align-items:center;justify-content:space-between;--mdc-icon-button-size:60px;--mdc-icon-size:30px">
-        <mwc-icon-button icon=flag style="background-color:rgb(63, 81, 181);color:white;border-radius:50%"
-          @click=${_=>{this.video.flag=this.player.getCurrentTime();this.requestUpdate();this.saveData()}}></mwc-icon-button>
-        <div>${~~this.video.flag}</div>
-        <mwc-icon-button icon=fast_rewind
-          @click=${_=>{this.player.seekTo(this.video.flag)}}></mwc-icon-button>
+          <mwc-icon-button icon=fast_rewind
+                           @click=${_=>{this.player.seekTo(this.video.flag)}}></mwc-icon-button>
+          <div>${~~this.video.flag}</div>
+          <mwc-icon-button icon=flag style="background-color:rgb(63, 81, 181);color:white;border-radius:50%"
+                           @click=${_=>{this.video.flag=this.player.getCurrentTime();this.requestUpdate();this.saveData()}}></mwc-icon-button>
       </div>
       ` : nothing}
 
     ` : nothing}
     `
+  }
+
+  onPlayButtonClick() {
+    this.player.getPlayerState() === 1 ? this.player.pauseVideo() : this.player.playVideo()
+  }
+
+  protected firstUpdated(_changedProperties: PropertyValues) {
+    window.addEventListener('keypress', (e) => {
+      if (e.key=='a') {
+        this.backButton.click()
+      }
+      if (e.key=='d') {
+        this.forwardButton.click()
+      }
+      if (e.key==' ') {
+        e.preventDefault()
+        this.onPlayButtonClick()
+      }
+    })
+    super.firstUpdated(_changedProperties);
   }
 
   navigateTo () {
