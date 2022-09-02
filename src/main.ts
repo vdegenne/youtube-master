@@ -12,6 +12,7 @@ import { CreateDialog } from './create-dialog'
 import { Data, Video } from './types'
 import './share-interface'
 import {Button} from "@material/mwc-button";
+import { ControllerController } from './ControllerController'
 
 declare global {
   interface Window {
@@ -38,8 +39,12 @@ export class AppContainer extends LitElement {
   @query('#IFrame') playerTest!: HTMLIFrameElement;
   @query('#homeButton') homeButton!: HTMLAnchorElement;
   @query('[icon=restore]') backButton!: Button;
-  @query('[icon=update]') forwardButton!: Button;
   @query('#playButton') playButton!: Button;
+  @query('[icon=update]') forwardButton!: Button;
+  @query('[icon=fast_rewind]') fastForwardButton!: Button;
+  @query('[icon=flag]') flagButton!: Button;
+  @query('#slowratebutton') slowRateButton!: HTMLDivElement;
+  @query('#speedratebutton') speedRateButton!: HTMLDivElement;
 
   get isVideoSaved () {
     // const params = new URLSearchParams(window.location.search)
@@ -82,6 +87,9 @@ export class AppContainer extends LitElement {
     window.addEventListener('resize', () => {
       this.requestUpdate()
     })
+
+    // Controller
+    new ControllerController(this)
   }
 
   static styles = css`
@@ -165,10 +173,10 @@ export class AppContainer extends LitElement {
 
       ${this.loaded ? html`
       <div class="flex">
-        <div class="button" style="width:80px;height:80px;--mdc-icon-size:24px"
+        <div id=slowratebutton class="button" style="width:80px;height:80px;--mdc-icon-size:24px"
           @click=${() => this.setSpeed(this.video.speed - .25)}><mwc-icon>slow_motion_video</mwc-icon></div>
         <div style="font-size:28px;font-weight:bold">${this.video && this.video.speed}</div>
-        <div class="button" style="width:80px;height:80px;--mdc-icon-size:24px"
+        <div id=speedratebutton class="button" style="width:80px;height:80px;--mdc-icon-size:24px"
           @click=${() => this.setSpeed(this.video.speed + .25)}><mwc-icon>speed</mwc-icon></div>
       </div>
 
