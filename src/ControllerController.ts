@@ -24,7 +24,7 @@ export class ControllerController {
       .before('button15', ()=>{ this.app.forwardButton.click() })
 
 
-      .before('button6', () => { this.app.flagButton.click() })
+      .before('button8', () => { this.app.flagButton.click() })
       .before('button7', () => { this.app.fastForwardButton.click() })
 
       .before('button4', () => { this.app.slowRateButton.click() })
